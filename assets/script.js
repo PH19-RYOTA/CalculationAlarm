@@ -2,6 +2,11 @@ let alarmTime = null;
 let alarmTimeout = null;
 let correctAnswer = 0;
 
+function isMobile() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /android|iphone|ipad|ipod/i.test(userAgent);
+}
+
 function setAlarm() {
     const input = document.getElementById('alarmTime').value;
     if (!input) {
@@ -28,9 +33,15 @@ function setAlarm() {
         clearTimeout(alarmTimeout);
     }
     alarmTimeout = setTimeout(() => {
-        document.getElementById('alarmSound').play();
+        // document.getElementById('alarmSound').play();
         document.getElementById('status').textContent = '起きて！';
-        showMathChallenge();
+        if (isMobile() && confirm('起きて！ OKを推してアラームを止めよう')) {
+            document.getElementById('alarmSound').play();
+            showMathChallenge();
+        } else {
+            document.getElementById('alarmSound').play();
+            showMathChallenge();
+        }
     }, timeToAlarm);
 }
 
