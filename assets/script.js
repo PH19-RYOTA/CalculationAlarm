@@ -5,7 +5,7 @@ let correctAnswer = 0;
 function setAlarm() {
     const input = document.getElementById('alarmTime').value;
     if (!input) {
-        alert('アラームを設定してください。');
+        alert('アラームを設定してください');
         return;
     }
 
@@ -19,7 +19,7 @@ function setAlarm() {
     const timeToAlarm = alarmDate.getTime() - now.getTime();
 
     if (timeToAlarm < 0) {
-        alert('選択された時刻はすでに過ぎています。未来の時間を選択してください。');
+        alert('選択された時刻はすでに過ぎています。');
         return;
     }
 
@@ -28,11 +28,9 @@ function setAlarm() {
         clearTimeout(alarmTimeout);
     }
     alarmTimeout = setTimeout(() => {
+        document.getElementById('alarmSound').play();
         document.getElementById('status').textContent = '起きて！';
-        if (confirm('起きて！ 問題をクリアしてアラームを止めよう')) {
-            document.getElementById('alarmSound').play();
-            showMathChallenge();
-        }
+        showMathChallenge();
     }, timeToAlarm);
 }
 
@@ -40,19 +38,18 @@ function showMathChallenge() {
     const num1 = Math.floor(Math.random() * 100) + 1;
     const num2 = Math.floor(Math.random() * 100) + 1;
     correctAnswer = num1 + num2;
-    document.getElementById('question').textContent = `問題：${num1} + ${num2} = ?`;
+    document.getElementById('question').textContent = `計算式：${num1} + ${num2} = ?`;
     document.getElementById('mathChallenge').style.display = 'block';
 }
 
 function checkAnswer() {
     const userAnswer = parseInt(document.getElementById('answer').value, 10);
     if (userAnswer === correctAnswer) {
-        document.getElementById('status').textContent = '正解！アラームが止まります。'
-        // document.getElementById('feedback').textContent = '正解！アラームが止まりました。';
+        document.getElementById('status').textContent = '正解！アラームを止めます。';
         document.getElementById('alarmSound').pause();
         document.getElementById('alarmSound').currentTime = 0;
         document.getElementById('mathChallenge').style.display = 'none';
     } else {
-        document.getElementById('feedback').textContent = '不正解。 計算し直してください';
+        document.getElementById('feedback').textContent = '不正解。再度計算し直してください。';
     }
 }
