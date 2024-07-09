@@ -23,34 +23,36 @@ function setAlarm() {
         return;
     }
 
-    document.getElementById('status').textContent = `アラームを ${input}に設定しました`;
+    document.getElementById('status').textContent = `アラームを${input}に設定しました`;
     if (alarmTimeout) {
         clearTimeout(alarmTimeout);
     }
     alarmTimeout = setTimeout(() => {
-        document.getElementById('alarmSound').play();
-        document.getElementById('status').textContent = '起きて!';
-        showMathChallenge();
+        document.getElementById('status').textContent = '起きて！';
+        if (confirm('起きて！ 問題をクリアしてアラームを止めよう')) {
+            document.getElementById('alarmSound').play();
+            showMathChallenge();
+        }
     }, timeToAlarm);
 }
 
 function showMathChallenge() {
-    const num1 = Math.floor(Math.random() * 1000) + 1;
-    const num2 = Math.floor(Math.random() * 1000) + 1;
+    const num1 = Math.floor(Math.random() * 100) + 1;
+    const num2 = Math.floor(Math.random() * 100) + 1;
     correctAnswer = num1 + num2;
-    document.getElementById('question').textContent = `What is ${num1} + ${num2} = ?`;
+    document.getElementById('question').textContent = `問題：${num1} + ${num2} = ?`;
     document.getElementById('mathChallenge').style.display = 'block';
 }
 
 function checkAnswer() {
     const userAnswer = parseInt(document.getElementById('answer').value, 10);
     if (userAnswer === correctAnswer) {
-        document.getElementById('status').textContent = '正解！おはようございます！';
-        // document.getElementById('feedback').textContent = '';
+        document.getElementById('status').textContent = '正解！アラームが止まります。'
+        // document.getElementById('feedback').textContent = '正解！アラームが止まりました。';
         document.getElementById('alarmSound').pause();
         document.getElementById('alarmSound').currentTime = 0;
         document.getElementById('mathChallenge').style.display = 'none';
     } else {
-        document.getElementById('feedback').textContent = '不正解。回答できるまで音は鳴り止まないです。';
+        document.getElementById('feedback').textContent = '不正解。 計算し直してください';
     }
 }
